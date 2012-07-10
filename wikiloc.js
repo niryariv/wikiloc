@@ -1,13 +1,3 @@
-<?php
-
-$url = 'http://api.wikilocation.org/articles?lat=31.772631&lng=35.21878&radius=2000';
-
-$json = file_get_contents($url);
-
-$data = json_decode($json);
-
-// var_dump($data);
-?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -108,4 +98,3 @@ $data = json_decode($json);
     style="width: 500px; height: 300px"></div>
   </body>
 </html>
-
