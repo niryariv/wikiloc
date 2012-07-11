@@ -29,6 +29,24 @@
     var wikidata;
     var map;
     var infowindow;
+    var currentLocation;
+
+    function HomeControl(controlDiv, map) {
+
+      controlDiv.style.padding = '5px';
+
+      var controlUI = document.createElement('div');
+      controlUI.title = 'Click to set the map to Home';
+      controlDiv.appendChild(controlUI);
+
+      var controlText = document.createElement('div');
+      controlText.innerHTML = '<img src="center.png" width="20" height="20" />';
+      controlUI.appendChild(controlText);
+
+      google.maps.event.addDomListener(controlUI, 'click', function() {
+        map.setCenter(currentLocation);
+      });
+    }
 
     function createMarker(point, text, title) {
       var marker = new google.maps.Marker(
@@ -53,6 +71,7 @@
     }
 
     function renderData(wikidata){
+      var bounds = new google.maps.LatLngBounds ();
 
       for(d in wikidata) { 
 
@@ -60,12 +79,15 @@
       
         html = "<a href=\"" + wikidata[d]['mobileurl'] + "\">" + wikidata[d]['title'] + "</a>";
         var marker = createMarker(point, html, wikidata[d]['title']);
-        // map.addOverlay(marker); 
         marker.setMap(map);
+
+        bounds.extend (point);
       }
+
+      map.fitBounds (bounds);
     }
 
-    function markCenter(lat, lng){ 
+    function markCenter(currentLocation){ 
       var goldStar = {
         path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
         fillColor: "yellow",
@@ -76,7 +98,7 @@
       };
 
       var marker = new google.maps.Marker({
-        position: new google.maps.LatLng(lat, lng),
+        position: currentLocation,
         icon: goldStar,
         map: map
       });
@@ -88,21 +110,26 @@
         {
           lat:location_lat, // 31.772631,
           lng:location_lng, // 35.21878,
-          radius:2000
+          radius:1000
         },
         function(data) { renderData(data['articles']); }
       );
     }
 
-    function initMap(lat,lng) {
+    function initMap(currentLocation) {
       var myOptions = {
-        center: new google.maps.LatLng(lat, lng),
-        zoom: 17,
+        center: currentLocation,
+        zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       
       map = new google.maps.Map(document.getElementById("map"), myOptions);
 
+      var homeControlDiv = document.createElement('div');
+      var homeControl = new HomeControl(homeControlDiv, map);
+
+      homeControlDiv.index = 1;
+      map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
     }        
 
     function load() {
@@ -112,9 +139,11 @@
 
           lat = position.coords.latitude;
           lng = position.coords.longitude;
+
+          currentLocation = new google.maps.LatLng(lat, lng);
         
-          initMap(lat, lng);
-          markCenter(lat, lng);
+          initMap(currentLocation);
+          markCenter(currentLocation);
           getData(lat, lng);
         }, 
 
