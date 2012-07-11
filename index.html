@@ -47,7 +47,8 @@
       controlUI.appendChild(controlText);
 
       google.maps.event.addDomListener(controlUI, 'click', function() {
-        map.setCenter(currentLocation);
+        init();
+        // map.setCenter(currentLocation);
       });
     }
 
@@ -74,7 +75,7 @@
     }
 
     function renderData(wikidata){
-      var bounds = new google.maps.LatLngBounds ();
+      // var bounds = new google.maps.LatLngBounds ();
 
       for(d in wikidata) { 
 
@@ -84,10 +85,10 @@
         var marker = createMarker(point, html, wikidata[d]['title']);
         marker.setMap(map);
 
-        bounds.extend (point);
+        // bounds.extend (point);
       }
 
-      map.fitBounds (bounds);
+      // map.fitBounds (bounds);
     }
 
     function markCenter(currentLocation){ 
@@ -119,9 +120,9 @@
       );
     }
 
-    function initMap(currentLocation) {
+    function initMap(location) {
       var myOptions = {
-        center: currentLocation,
+        center: location,
         disableDefaultUI: true,
         streetViewControl: true,
         zoom: 15,
@@ -137,8 +138,7 @@
       map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
     }        
 
-    function load() {
-
+    function init() {
       navigator.geolocation.getCurrentPosition(
         function(position){
 
@@ -146,8 +146,12 @@
           lng = position.coords.longitude;
 
           currentLocation = new google.maps.LatLng(lat, lng);
-        
-          initMap(currentLocation);
+          
+          if (map) 
+            map.setCenter(currentLocation);
+          else 
+            initMap(currentLocation);
+
           markCenter(currentLocation);
           getData(lat, lng);
         }, 
@@ -156,6 +160,12 @@
         
         { enableHighAccuracy: true, timeout: 10000000, maximumAge: 0 }
       );
+
+    }
+
+    function load() {
+      init();
+
     }
     
     //]]>
