@@ -28,6 +28,7 @@
       
     var wikidata;
     var map;
+    var infowindow;
 
     function createMarker(point, text, title) {
       var marker = new google.maps.Marker(
@@ -37,10 +38,15 @@
         }
       );
 
-      var infowindow = new google.maps.InfoWindow({ content: text });
-
+      
       google.maps.event.addListener(
-        marker, "click", function() { infowindow.open(map,marker); }
+        marker, "click", 
+        function() {
+          if (infowindow) infowindow.close();
+
+          infowindow = new google.maps.InfoWindow({ content: text });
+          infowindow.open(map,marker); 
+        }
       );
       
       return marker;
