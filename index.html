@@ -37,9 +37,12 @@
 
       var controlUI = document.createElement('div');
       controlUI.title = 'Click to set the map to Home';
+      // controlUI.style.backgroundColor = 'white';
       controlDiv.appendChild(controlUI);
 
       var controlText = document.createElement('div');
+      // controlText.style.paddingTop = '4px';
+      // controlText.style.paddingBottom = '2px';
       controlText.innerHTML = '<img src="center.png" width="20" height="20" />';
       controlUI.appendChild(controlText);
 
@@ -119,6 +122,8 @@
     function initMap(currentLocation) {
       var myOptions = {
         center: currentLocation,
+        disableDefaultUI: true,
+        streetViewControl: true,
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP
       };
