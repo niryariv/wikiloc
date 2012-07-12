@@ -81,7 +81,7 @@
 
         point = new google.maps.LatLng(wikidata[d]['lat'], wikidata[d]['lng']);
       
-        html = "<a href=\"" + wikidata[d]['mobileurl'] + "\">" + wikidata[d]['title'] + "</a>";
+        html = "<a href='" + wikidata[d]['mobileurl'] + "' target='_self'>" + wikidata[d]['title'] + "</a>";
         var marker = createMarker(point, html, wikidata[d]['title']);
         marker.setMap(map);
 
