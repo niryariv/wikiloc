@@ -47,7 +47,7 @@
       controlUI.appendChild(controlText);
 
       google.maps.event.addDomListener(controlUI, 'click', function() {
-        init();
+        centerOnCurrentLocation();
         // map.setCenter(currentLocation);
       });
     }
@@ -138,13 +138,11 @@
       map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
     }        
 
-    function init() {
+    function centerOnCurrentLocation() {
       navigator.geolocation.getCurrentPosition(
         function(position){
-
           lat = position.coords.latitude;
           lng = position.coords.longitude;
-
           currentLocation = new google.maps.LatLng(lat, lng);
           
           if (map) 
@@ -164,14 +162,28 @@
     }
 
     function load() {
-      init();
+
+
+      // when the page is viewed, recenter
+      var focused = true;
+
+      $(window).focus(function(){
+        if (!focused) { centerOnCurrentLocation(); }
+        focused = true;
+      });
+
+      $(window).blur(function(){
+        focused = false;
+      });
+
+      centerOnCurrentLocation();
 
     }
     
     //]]>
     </script>
   </head>
-  <body onload="load()" onunload="GUnload()">
+  <body onload="load()" onunload="">
     <div id="map" style="width:100%; height:100%;"></div>
   </body>
 </html>
