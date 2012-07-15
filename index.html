@@ -17,18 +17,20 @@
       #heading {
         text-align: center;
         font-family: Times New Roman;
+        line-height:1.5em;
       }
       
       #centerButton {
         float:right; 
-        margin-right: 5%;
+        margin-right: 2%;
+        line-height:1.5em;
       }
 
     </style>
 
-    <!-- script src="http://maps.google.com/maps?file=api&v=2&key=AIzaSyD72kGi4xTNaJIlPpquAJcQW1Oz5JyQYdU" type="text/javascript"></script -->
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD72kGi4xTNaJIlPpquAJcQW1Oz5JyQYdU&sensor=false"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+    
     <script type="text/javascript">
     //<![CDATA[
 
@@ -42,27 +44,6 @@
     var map;
     var infowindow;
     var currentLocation;
-
-    // handling w/ button now
-    // function HomeControl(controlDiv, map) {
-
-    //   controlDiv.style.padding = '5px';
-
-    //   var controlUI = document.createElement('div');
-    //   controlUI.title = 'Click to set the map to Home';
-    //   // controlUI.style.backgroundColor = 'white';
-    //   controlDiv.appendChild(controlUI);
-
-    //   var controlText = document.createElement('div');
-    //   // controlText.style.paddingTop = '4px';
-    //   // controlText.style.paddingBottom = '2px';
-    //   controlText.innerHTML = '<img src="center.png" width="20" height="20" />';
-    //   controlUI.appendChild(controlText);
-
-    //   google.maps.event.addDomListener(controlUI, 'click', function() {
-    //     centerOnCurrentLocation();
-    //   });
-    // }
 
     function createMarker(point, text, title) {
       var marker = new google.maps.Marker(
@@ -87,20 +68,25 @@
     }
 
     function renderData(wikidata){
-      // var bounds = new google.maps.LatLngBounds ();
+      var bounds = new google.maps.LatLngBounds ();
 
       for(d in wikidata) { 
 
-        point = new google.maps.LatLng(wikidata[d]['lat'], wikidata[d]['lng']);
+        item = wikidata[d];
+
+        point = new google.maps.LatLng(item.lat, item.lng); //wikidata[d]['lat'], wikidata[d]['lng']);
       
-        html = "<a href='" + wikidata[d]['mobileurl'] + "' target='_self'>" + wikidata[d]['title'] + "</a>";
-        var marker = createMarker(point, html, wikidata[d]['title']);
+        html = "<a href='" + item.mobileurl + "' target='_self'>" + item.title + "</a>";
+        if (item.type != '') 
+          html += "<br /><tt>(" + item.type + ")</tt>";
+
+        var marker = createMarker(point, html, item.title);
         marker.setMap(map);
 
-        // bounds.extend (point);
+        bounds.extend (point);
       }
+      map.fitBounds (bounds);
 
-      // map.fitBounds (bounds);
     }
 
     function markCenter(currentLocation){ 
@@ -143,13 +129,6 @@
       
       map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-      // var homeControlDiv = document.createElement('div');
-      // var homeControl = new HomeControl(homeControlDiv, map);
-
-      // homeControlDiv.style.backgroundColor = "white";
-
-      // homeControlDiv.index = 1;
-      // map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
     }        
 
     function centerOnCurrentLocation() {
