@@ -11,7 +11,19 @@
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
+      
       #map { height: 100% }
+      
+      #heading {
+        text-align: center;
+        font-family: Times New Roman;
+      }
+      
+      #centerButton {
+        float:right; 
+        margin-right: 5%;
+      }
+
     </style>
 
     <!-- script src="http://maps.google.com/maps?file=api&v=2&key=AIzaSyD72kGi4xTNaJIlPpquAJcQW1Oz5JyQYdU" type="text/javascript"></script -->
@@ -31,26 +43,26 @@
     var infowindow;
     var currentLocation;
 
-    function HomeControl(controlDiv, map) {
+    // handling w/ button now
+    // function HomeControl(controlDiv, map) {
 
-      controlDiv.style.padding = '5px';
+    //   controlDiv.style.padding = '5px';
 
-      var controlUI = document.createElement('div');
-      controlUI.title = 'Click to set the map to Home';
-      // controlUI.style.backgroundColor = 'white';
-      controlDiv.appendChild(controlUI);
+    //   var controlUI = document.createElement('div');
+    //   controlUI.title = 'Click to set the map to Home';
+    //   // controlUI.style.backgroundColor = 'white';
+    //   controlDiv.appendChild(controlUI);
 
-      var controlText = document.createElement('div');
-      // controlText.style.paddingTop = '4px';
-      // controlText.style.paddingBottom = '2px';
-      controlText.innerHTML = '<img src="center.png" width="20" height="20" />';
-      controlUI.appendChild(controlText);
+    //   var controlText = document.createElement('div');
+    //   // controlText.style.paddingTop = '4px';
+    //   // controlText.style.paddingBottom = '2px';
+    //   controlText.innerHTML = '<img src="center.png" width="20" height="20" />';
+    //   controlUI.appendChild(controlText);
 
-      google.maps.event.addDomListener(controlUI, 'click', function() {
-        centerOnCurrentLocation();
-        // map.setCenter(currentLocation);
-      });
-    }
+    //   google.maps.event.addDomListener(controlUI, 'click', function() {
+    //     centerOnCurrentLocation();
+    //   });
+    // }
 
     function createMarker(point, text, title) {
       var marker = new google.maps.Marker(
@@ -114,7 +126,7 @@
         {
           lat:location_lat, // 31.772631,
           lng:location_lng, // 35.21878,
-          radius:1000
+          radius:2000
         },
         function(data) { renderData(data['articles']); }
       );
@@ -131,11 +143,13 @@
       
       map = new google.maps.Map(document.getElementById("map"), myOptions);
 
-      var homeControlDiv = document.createElement('div');
-      var homeControl = new HomeControl(homeControlDiv, map);
+      // var homeControlDiv = document.createElement('div');
+      // var homeControl = new HomeControl(homeControlDiv, map);
 
-      homeControlDiv.index = 1;
-      map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
+      // homeControlDiv.style.backgroundColor = "white";
+
+      // homeControlDiv.index = 1;
+      // map.controls[google.maps.ControlPosition.RIGHT_TOP].push(homeControlDiv);
     }        
 
     function centerOnCurrentLocation() {
@@ -154,7 +168,13 @@
           getData(lat, lng);
         }, 
 
-        function(err) { alert("Error: " + errors[error.code]); },
+        function(err) { 
+          code = err.code;
+          if (code == 1) 
+            alert ("Please allow location detection for this app to work");
+          else 
+            alert("navigator.geolocation.getCurrentPosition Error: " + code); 
+        },
         
         { enableHighAccuracy: true, timeout: 10000000, maximumAge: 0 }
       );
@@ -176,6 +196,10 @@
         focused = false;
       });
 
+      $("#centerButton").click( function() {
+        centerOnCurrentLocation();
+      });
+
       centerOnCurrentLocation();
 
     }
@@ -184,6 +208,7 @@
     </script>
   </head>
   <body onload="load()" onunload="">
+    <div id="heading">Wikipedia Around Me <button id="centerButton" />Center</button></div>
     <div id="map" style="width:100%; height:100%;"></div>
   </body>
 </html>
