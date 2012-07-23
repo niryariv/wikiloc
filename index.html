@@ -15,6 +15,8 @@
       #map { height: 100% }
       
       #heading {
+        margin-left: auto;
+        margin-right: auto;
         text-align: center;
         font-family: Times New Roman;
         line-height:1.5em;
@@ -85,7 +87,7 @@
 
         bounds.extend (point);
       }
-      map.fitBounds (bounds);
+      // map.fitBounds (bounds);
 
     }
 
@@ -110,8 +112,8 @@
       $.getJSON(
         "http://api.wikilocation.org/articles?jsonp=?",
         {
-          lat:location_lat, // 31.772631,
-          lng:location_lng, // 35.21878,
+          lat:location_lat, 
+          lng:location_lng, 
           radius:2000
         },
         function(data) { renderData(data['articles']); }
@@ -138,10 +140,13 @@
           lng = position.coords.longitude;
           currentLocation = new google.maps.LatLng(lat, lng);
           
-          if (map) 
+          if (map) {
+            z = map.getZoom();
             map.setCenter(currentLocation);
-          else 
+            map.setZoom(z);
+          } else {
             initMap(currentLocation);
+          }
 
           markCenter(currentLocation);
           getData(lat, lng);
