@@ -87,7 +87,7 @@
 
         bounds.extend (point);
       }
-      // map.fitBounds (bounds);
+      map.fitBounds (bounds);
 
     }
 
@@ -114,7 +114,8 @@
         {
           lat:location_lat, 
           lng:location_lng, 
-          radius:2000
+          radius:20000,
+          limit:20
         },
         function(data) { renderData(data['articles']); }
       );
