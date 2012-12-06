@@ -8,6 +8,7 @@
 
     <title>Wikipedia Around Me</title>
 
+    <link href="./add2home/add2home.css" rel="stylesheet" />
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
@@ -31,8 +32,8 @@
     </style>
 
     <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyD72kGi4xTNaJIlPpquAJcQW1Oz5JyQYdU&sensor=false"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
-    
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <script type="text/javascript" src="./add2home/add2home.js"></script>
     <script type="text/javascript">
     //<![CDATA[
 
@@ -87,7 +88,7 @@
 
         bounds.extend (point);
       }
-      
+
       map.fitBounds (bounds);
 
     }
