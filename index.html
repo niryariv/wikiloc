@@ -87,23 +87,24 @@
 
         bounds.extend (point);
       }
+      
       map.fitBounds (bounds);
 
     }
 
     function markCenter(currentLocation){ 
-      var goldStar = {
+      var starMarker = {
         path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
-        fillColor: "yellow",
+        fillColor: "black",
         fillOpacity: 0.8,
-        scale: .01,
-        strokeColor: "gold",
-        strokeWeight: 5
+        scale: .08,
+        strokeColor: "red",
+        strokeWeight: 2
       };
 
       var marker = new google.maps.Marker({
         position: currentLocation,
-        icon: goldStar,
+        icon: starMarker,
         map: map
       });
     }
