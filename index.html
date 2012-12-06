@@ -47,6 +47,17 @@
     var map;
     var infowindow;
     var currentLocation;
+    var centerMarker;
+
+    var starMarkerIcon = {
+        path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+        fillColor: "black",
+        fillOpacity: 0.8,
+        scale: .08,
+        strokeColor: "red",
+        strokeWeight: 2
+      };
+
 
     function createMarker(point, text, title) {
       var marker = new google.maps.Marker(
@@ -94,18 +105,11 @@
     }
 
     function markCenter(currentLocation){ 
-      var starMarker = {
-        path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
-        fillColor: "black",
-        fillOpacity: 0.8,
-        scale: .08,
-        strokeColor: "red",
-        strokeWeight: 2
-      };
+      if (centerMarker) centerMarker.setMap(null);
 
-      var marker = new google.maps.Marker({
+      centerMarker = new google.maps.Marker({
         position: currentLocation,
-        icon: starMarker,
+        icon: starMarkerIcon,
         map: map
       });
     }
